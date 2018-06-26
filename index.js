@@ -3,25 +3,30 @@ import expenseRoutes from './src/routes/expenseRoute';
 import categoryRoutes from './src/routes/categoryRoutes';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import config from 'config';
 
-const app = express();
+
+
+export const app = express();
 const PORT = 8000;
 
 //mongose connection
 
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://admin:test1234@ds255260.mlab.com:55260/expenses`);
+mongoose.connect(config.DBHost);
 
 // body parser
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-  });
-  
+});
+
 
 // Routes
 expenseRoutes(app);
